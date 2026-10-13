@@ -1,0 +1,363 @@
+from pathlib import Path
+import zipfile, textwrap, os
+
+root = Path("/mnt/data/biodata-quest-site")
+(root / "assets").mkdir(parents=True, exist_ok=True)
+(root / "courses").mkdir(parents=True, exist_ok=True)
+
+files = {}
+
+files["index.html"] = r'''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102b3f">
+  <meta name="description" content="Free, hands-on learning in bioinformatics, computational biology, Python, and AI. Learn by investigating real scientific questions.">
+  <title>BioData Quest — Learn Biology. Write Code. Discover Patterns.</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/script.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="./" aria-label="BioData Quest home">
+        <span class="brand-mark" aria-hidden="true">⌬</span>
+        <span><strong>BioData Quest</strong><small>CODE · BIOLOGY · DISCOVERY</small></span>
+      </a>
+      <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav">Menu <span aria-hidden="true">☰</span></button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+        <a href="#courses">Courses</a>
+        <a href="#lab">Try a lab</a>
+        <a href="#educators">For educators</a>
+        <a href="#about">About</a>
+        <a class="nav-cta" href="#courses">Explore courses <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-orb orb-one"></div><div class="hero-orb orb-two"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="pulse-dot"></span> OPEN LEARNING · ALWAYS FREE</div>
+          <h1>Biology has data.<br><span>Let's make sense of it.</span></h1>
+          <p class="hero-intro">A hands-on learning lab for curious minds who want to explore biology with code, data science, and AI — one experiment at a time.</p>
+          <div class="hero-actions">
+            <a class="button button-light" href="#courses">Explore the missions <span aria-hidden="true">→</span></a>
+            <a class="text-link hero-link" href="#lab">Try a mini lab <span aria-hidden="true">↘</span></a>
+          </div>
+          <div class="hero-notes">
+            <span><span class="check">✓</span> Free learning materials</span>
+            <span><span class="check">✓</span> Learn by building</span>
+            <span><span class="check">✓</span> Beginner-friendly pathways</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of DNA, data, and a microscope">
+          <div class="art-label label-top"><span class="tiny-icon">✳</span> Curiosity detected</div>
+          <div class="science-card card-dna">
+            <div class="card-kicker">SEQUENCE VIEWER <span class="live-tag">LIVE</span></div>
+            <div class="dna-helix" aria-hidden="true">
+              <span>A</span><i></i><b>T</b><span>G</span><i></i><b>C</b><span>T</span><i></i><b>A</b><span>G</span>
+            </div>
+            <div class="mini-sequence">ATG CCG TTA GCA</div>
+          </div>
+          <div class="science-card card-chart">
+            <div class="card-kicker">DATA SNAPSHOT</div>
+            <div class="chart-bars" aria-label="Decorative data chart"><i style="height:38%"></i><i style="height:70%"></i><i style="height:52%"></i><i style="height:88%"></i><i style="height:62%"></i><i style="height:100%"></i><i style="height:77%"></i></div>
+            <div class="chart-caption"><span>Sample A</span><strong>Patterns hide in plain sight.</strong></div>
+          </div>
+          <div class="science-card card-microscope">
+            <span class="micro-orbit orbit-a"></span><span class="micro-orbit orbit-b"></span>
+            <div class="microscope">⌕</div><div><strong>Observe.</strong><br><small>Question everything.</small></div>
+          </div>
+          <div class="floating-chip chip-code"><span>{ }</span> Python</div>
+          <div class="floating-chip chip-ai"><span>✦</span> Machine learning</div>
+          <div class="art-label label-bottom">A little science. A little code. A lot of discovery.</div>
+        </div>
+      </div>
+      <div class="hero-bottom-line"></div>
+    </section>
+
+    <section class="ticker" aria-label="Topics">
+      <div class="container ticker-inner"><span>COMPUTATIONAL BIOLOGY</span><b>✳</b><span>BIOINFORMATICS</span><b>✳</b><span>PYTHON</span><b>✳</b><span>AI & MACHINE LEARNING</span><b>✳</b><span>DATA VISUALIZATION</span></div>
+    </section>
+
+    <section id="courses" class="section courses-section">
+      <div class="container">
+        <div class="section-heading">
+          <div><div class="eyebrow eyebrow-dark">YOUR RESEARCH JOURNEY</div><h2>Pick a mission.<br><span>Learn by doing.</span></h2></div>
+          <p>Short lessons, guided coding labs, mini-challenges, and projects that turn scientific curiosity into practical skills.</p>
+        </div>
+        <div class="course-grid">
+          <article class="course-card course-dna">
+            <div class="course-top"><span class="course-number">MISSION 01</span><span class="course-status status-building">START HERE</span></div>
+            <div class="course-illustration dna-illustration" aria-hidden="true"><span> A </span><i></i><span> T </span><i></i><span> G </span><i></i><span> C </span></div>
+            <h3>DNA Detective</h3>
+            <p>Turn a DNA sequence into data. Count bases, calculate GC content, and compare two sequences using Python.</p>
+            <div class="course-meta"><span>⌁ Python basics</span><span>◷ Beginner</span></div>
+            <a class="button button-dark" href="courses/dna-detective.html">Enter the lab <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="course-card course-ai">
+            <div class="course-top"><span class="course-number">MISSION 02</span><span class="course-status">COMING NEXT</span></div>
+            <div class="course-illustration cell-illustration" aria-hidden="true"><span class="cell cell-a"></span><span class="cell cell-b"></span><span class="cell cell-c"></span><span class="cell cell-d"></span><span class="cell cell-e"></span></div>
+            <h3>The Cell Classifier</h3>
+            <p>Train a Random Forest to classify simulated cell samples. Test it, inspect mistakes, and ask whether to trust it.</p>
+            <div class="course-meta"><span>⌁ Machine learning</span><span>◷ Beginner–intermediate</span></div>
+            <a class="button button-outline" href="#roadmap">View learning path <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="course-card course-expression">
+            <div class="course-top"><span class="course-number">MISSION 03</span><span class="course-status">COMING NEXT</span></div>
+            <div class="course-illustration heatmap-illustration" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <h3>The Gene Expression Mystery</h3>
+            <p>Explore a gene-expression dataset, build visualizations, compare groups, and communicate what the evidence supports.</p>
+            <div class="course-meta"><span>⌁ Data analysis</span><span>◷ Intermediate</span></div>
+            <a class="button button-outline" href="#roadmap">View learning path <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+        <p class="section-footnote"><span class="asterisk">✳</span> The first course is being built in public. The next missions will grow from the same learn–code–investigate format.</p>
+      </div>
+    </section>
+
+    <section id="lab" class="section lab-section">
+      <div class="container lab-grid">
+        <div class="lab-copy">
+          <div class="eyebrow eyebrow-dark">A TINY TASTE OF THE LAB</div>
+          <h2>Meet your first<br><span>DNA data point.</span></h2>
+          <p>DNA is biological information written with four letters: A, T, C, and G. A computer can count those letters in seconds — even in very long sequences.</p>
+          <div class="lab-concept"><span class="concept-icon">i</span><p><strong>What is GC content?</strong><br>It is the percentage of bases in a sequence that are G or C. It describes a sequence; by itself, it does not tell you what an organism is or whether a gene is active.</p></div>
+          <p class="small-note">This demo uses a short example sequence for learning, not for clinical or diagnostic use.</p>
+        </div>
+        <div class="lab-console">
+          <div class="console-header"><div class="window-dots"><i></i><i></i><i></i></div><span>DNA QUICK-CHECK <span class="console-live">● READY</span></span><button id="reset-sequence" class="icon-button" type="button" title="Reset sequence" aria-label="Reset sequence">↻</button></div>
+          <label class="sequence-label" for="dna-sequence">Your DNA sequence</label>
+          <textarea id="dna-sequence" spellcheck="false" rows="3" aria-describedby="sequence-help">ATGCGCGATATGCCG</textarea>
+          <div id="sequence-help" class="input-help">Use only A, T, C, and G. Spaces and line breaks are okay.</div>
+          <div id="sequence-error" class="sequence-error" role="alert" hidden></div>
+          <div class="console-results">
+            <div class="result-box"><span>Sequence length</span><strong id="result-length">15</strong><small>base pairs*</small></div>
+            <div class="result-box"><span>G + C bases</span><strong id="result-gc-count">8</strong><small>of total bases</small></div>
+            <div class="result-box result-highlight"><span>GC content</span><strong id="result-gc">53.3%</strong><small>of this sequence</small></div>
+          </div>
+          <div class="base-counts"><span class="base-a">A <strong id="count-a">4</strong></span><span class="base-t">T <strong id="count-t">3</strong></span><span class="base-g">G <strong id="count-g">5</strong></span><span class="base-c">C <strong id="count-c">3</strong></span></div>
+          <button class="button button-teal run-button" id="analyze-sequence" type="button"><span>▶</span> Analyze sequence</button>
+          <div class="console-footer">*For this teaching demo, length is counted in bases (not necessarily base pairs).</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap" class="section roadmap-section">
+      <div class="container">
+        <div class="section-heading">
+          <div><div class="eyebrow eyebrow-dark">THE LEARNING LOOP</div><h2>Not just videos.<br><span>Actual practice.</span></h2></div>
+          <p>Each mission is designed to help you move from “I’ve heard of that” to “I can use it and explain what I did.”</p>
+        </div>
+        <div class="steps-grid">
+          <div class="step"><div class="step-icon step-purple">01</div><h3>Learn the idea</h3><p>Short explanations, visual examples, and a scientific question to solve.</p></div>
+          <div class="step"><div class="step-icon step-teal">02</div><h3>Explore the data</h3><p>Inspect real or clearly labeled simulated datasets and look for patterns.</p></div>
+          <div class="step"><div class="step-icon step-orange">03</div><h3>Build something</h3><p>Write code, run an experiment, change an input, and see what happens.</p></div>
+          <div class="step"><div class="step-icon step-blue">04</div><h3>Explain your result</h3><p>Complete a challenge and support your conclusions with evidence.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="educators" class="section educator-section">
+      <div class="container educator-panel">
+        <div class="educator-icon" aria-hidden="true">✳</div>
+        <div class="educator-copy"><div class="eyebrow">FOR EDUCATORS & SELF-LEARNERS</div><h2>Open materials.<br>Transparent learning.</h2><p>The goal is to make computational biology less intimidating and more hands-on. Course materials will include learning objectives, notebooks, datasets, assessment rubrics, and explanations of common mistakes.</p></div>
+        <div class="educator-list"><span>✓ Beginner-friendly explanations</span><span>✓ Reproducible coding notebooks</span><span>✓ Practice with feedback</span><span>✓ Scientific caution and context</span></div>
+      </div>
+    </section>
+
+    <section id="about" class="section about-section">
+      <div class="container about-grid">
+        <div><div class="eyebrow eyebrow-dark">WHY THIS EXISTS</div><h2>Science gets exciting<br><span>when you can explore it.</span></h2></div>
+        <div class="about-copy"><p>BioData Quest is an independent educational project exploring the intersection of computer science, biology, data, and AI. It is being built one lesson and one experiment at a time.</p><p>Created by Kavya Krishnamurthy, with a background in computer science and bioinformatics, the project aims to help learners connect computational skills with meaningful scientific questions.</p><p class="small-note">Educational content is for learning and research literacy. It is not medical advice, clinical testing, or a substitute for formal academic instruction.</p><a class="text-link dark-link" href="https://github.com/Kavya-Krishnamurthy" target="_blank" rel="noreferrer">Find the project on GitHub <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+
+    <section class="closing-cta">
+      <div class="container closing-inner"><div><div class="eyebrow">YOUR FIRST EXPERIMENT AWAITS</div><h2>Curiosity is a good place to start.</h2><p>Pick a mission. Try the code. Ask better questions.</p></div><a class="button button-light" href="courses/dna-detective.html">Start DNA Detective <span aria-hidden="true">→</span></a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner"><a class="brand footer-brand" href="./"><span class="brand-mark">⌬</span><span><strong>BioData Quest</strong><small>CODE · BIOLOGY · DISCOVERY</small></span></a><p>Made for curious minds, with science and care.</p><div class="footer-links"><a href="#courses">Courses</a><a href="#about">About</a><a href="https://github.com/Kavya-Krishnamurthy" target="_blank" rel="noreferrer">GitHub ↗</a></div></div>
+    <div class="container footer-bottom"><span>© <span id="year"></span> BioData Quest</span><span>Built for learning, not diagnosing.</span></div>
+  </footer>
+</body>
+</html>
+'''
+
+files["assets/styles.css"] = r'''@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{--navy:#102b3f;--navy-2:#183d51;--ink:#1c3546;--muted:#647887;--teal:#47d5bd;--mint:#d8f7ef;--purple:#a895ff;--lavender:#eeeaff;--cream:#fbfaf6;--line:#e2e8e6;--orange:#ffb26f;--blue:#9fd8f4;--white:#fff;--shadow:0 22px 60px rgba(18,49,65,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button,textarea{font:inherit}.container{width:min(1160px,calc(100% - 44px));margin-inline:auto}.skip-link{position:absolute;left:-999px;top:10px;background:#fff;padding:10px;z-index:100}.skip-link:focus{left:10px}.site-header{position:sticky;top:0;z-index:20;background:rgba(251,250,246,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(16,43,63,.08)}.nav-wrap{height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:inline-flex;align-items:center;gap:10px;min-width:max-content}.brand-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:var(--navy);color:var(--teal);font-size:30px;line-height:1;font-weight:700}.brand strong{display:block;font:800 18px Manrope,sans-serif;letter-spacing:-.6px;color:var(--navy)}.brand small{display:block;font:500 9px "DM Mono",monospace;letter-spacing:1.25px;color:var(--muted);margin-top:1px}.site-nav{display:flex;align-items:center;gap:27px;font-size:13px;font-weight:700;color:#506473}.site-nav a:not(.nav-cta):hover,.footer-links a:hover{color:#087f75}.nav-cta{padding:11px 16px;background:var(--navy);color:#fff;border-radius:12px}.nav-cta span{color:var(--teal);margin-left:6px}.menu-toggle{display:none;border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:10px;color:var(--navy);font-weight:700}
+.hero{background:var(--navy);color:#fff;position:relative;overflow:hidden;padding:78px 0 68px}.hero:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1px);background-size:24px 24px;opacity:.38;mask-image:linear-gradient(90deg,black,transparent 88%)}.hero-grid{display:grid;grid-template-columns:1fr .92fr;align-items:center;gap:42px;position:relative;z-index:1}.eyebrow{font:500 10px "DM Mono",monospace;letter-spacing:1.5px;color:var(--teal);text-transform:uppercase}.eyebrow-dark{color:#0a8e80}.pulse-dot{display:inline-block;width:7px;height:7px;background:var(--teal);border-radius:50%;margin-right:7px;box-shadow:0 0 0 5px rgba(71,213,189,.12)}h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:Manrope,sans-serif;letter-spacing:-1.5px}h1{font-size:clamp(40px,5vw,64px);line-height:1.08;margin:22px 0 20px;font-weight:800}h1 span{color:var(--teal)}.hero-intro{font-size:17px;color:#c8d8df;max-width:540px;line-height:1.8}.hero-actions{display:flex;align-items:center;gap:24px;margin-top:30px}.button{display:inline-flex;align-items:center;justify-content:center;gap:14px;border:0;border-radius:12px;padding:13px 18px;font-size:13px;font-weight:700;transition:transform .2s,box-shadow .2s;cursor:pointer}.button:hover{transform:translateY(-2px);box-shadow:0 9px 24px rgba(0,0,0,.12)}.button-light{background:var(--teal);color:var(--navy)}.text-link{font-size:13px;font-weight:700}.hero-link{color:#e0edf0}.hero-notes{display:flex;gap:15px;flex-wrap:wrap;margin-top:32px;color:#b9cbd3;font-size:11px}.check{color:var(--teal);font-weight:800;margin-right:4px}.hero-art{min-height:390px;position:relative}.hero-art:before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(71,213,189,.09);left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(71,213,189,.16)}.hero-art:after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;border:1px dashed rgba(168,149,255,.35);left:50%;top:50%;transform:translate(-50%,-50%)}.science-card{position:absolute;background:#fff;color:var(--ink);border:1px solid rgba(255,255,255,.5);border-radius:18px;box-shadow:0 18px 45px rgba(0,0,0,.2);z-index:2}.card-dna{width:260px;left:1%;top:30px;padding:18px 18px 15px;transform:rotate(-4deg)}.card-kicker{font:500 9px "DM Mono",monospace;letter-spacing:1px;color:#758694}.live-tag{float:right;background:#d9f8ee;color:#087f75;border-radius:5px;padding:3px 5px;font-size:8px}.dna-helix{display:flex;align-items:center;justify-content:space-between;margin:20px 0 10px;color:#087f75;font:700 14px "DM Mono",monospace}.dna-helix span:nth-of-type(odd){color:#7b68d8}.dna-helix i{height:2px;width:17px;background:#ffc17c;transform:rotate(30deg)}.dna-helix b{color:#e28b4f}.mini-sequence{font:500 10px "DM Mono",monospace;color:#73828d;letter-spacing:2px}.card-chart{width:245px;right:0;top:130px;padding:17px 18px;transform:rotate(4deg)}.chart-bars{height:78px;display:flex;align-items:end;gap:9px;padding:10px 3px 0;border-bottom:1px solid #e8eeed;margin-top:7px}.chart-bars i{display:block;flex:1;background:linear-gradient(180deg,#55d8c1,#b6eee1);border-radius:5px 5px 0 0}.chart-bars i:nth-child(2n){background:linear-gradient(180deg,#ac9bff,#ddd6ff)}.chart-caption{display:flex;flex-direction:column;gap:2px;margin-top:9px}.chart-caption span{font-size:9px;color:#71838d}.chart-caption strong{font-size:11px}.card-microscope{left:20%;bottom:15px;display:flex;align-items:center;gap:13px;padding:14px 18px;transform:rotate(2deg)}.microscope{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:#e1fbf5;color:#0b9b8c;font-size:36px;font-weight:700}.card-microscope strong{font-size:12px}.card-microscope small{font-size:10px;color:#71838d}.floating-chip{position:absolute;z-index:4;border:1px solid rgba(255,255,255,.18);background:#1e4559;color:#fff;padding:10px 13px;border-radius:12px;font-size:11px;font-weight:700;box-shadow:0 8px 25px #081e2c55}.floating-chip span{color:var(--teal);margin-right:5px}.chip-code{right:8%;top:30px}.chip-ai{left:2%;bottom:82px}.art-label{position:absolute;z-index:3;color:#bdd2d9;font:10px "DM Mono",monospace;letter-spacing:.3px}.label-top{right:3%;top:0}.label-bottom{right:0;bottom:-8px}.tiny-icon{color:var(--teal);font-size:15px}.hero-bottom-line{height:3px;position:absolute;bottom:0;left:0;right:0;background:linear-gradient(90deg,var(--teal),var(--purple),var(--orange))}
+.ticker{background:#fff;border-bottom:1px solid var(--line)}.ticker-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:58px;font:500 9px "DM Mono",monospace;letter-spacing:1.2px;color:#647b87}.ticker-inner b{color:#18aa98;font-size:14px}
+.section{padding:94px 0}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:45px;margin-bottom:38px}.section-heading h2,.lab-copy h2,.about-grid h2{font-size:clamp(34px,4vw,47px);line-height:1.15;margin:13px 0 0;color:var(--navy)}.section-heading h2 span,.lab-copy h2 span,.about-grid h2 span{color:#0c9c8d}.section-heading>p{max-width:380px;margin:0 0 5px;color:var(--muted);font-size:14px;line-height:1.8}.course-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.course-card{padding:24px;border-radius:19px;border:1px solid #e5e8e3;min-width:0;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}.course-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.course-dna{background:#e5faf4}.course-ai{background:#efedff}.course-expression{background:#fff1e2}.course-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.course-number{font:500 9px "DM Mono",monospace;letter-spacing:1px;color:#647b87}.course-status{font:500 8px "DM Mono",monospace;letter-spacing:.4px;padding:5px 7px;border-radius:5px;background:rgba(255,255,255,.65);color:#77838d;white-space:nowrap}.status-building{background:#c7f4e7;color:#087f75}.course-illustration{height:132px;display:flex;align-items:center;justify-content:center;margin:12px 0}.dna-illustration{gap:9px;font:800 23px "DM Mono",monospace;color:#0d9488}.dna-illustration span{display:grid;place-items:center;width:43px;height:43px;border:2px solid #44cdb4;border-radius:13px;background:#fff;box-shadow:0 5px 0 #a7e9dc;transform:rotate(-6deg)}.dna-illustration span:nth-of-type(even){color:#7b68d8;border-color:#b9aaff;box-shadow:0 5px 0 #d7ceff;transform:rotate(6deg)}.dna-illustration i{width:9px;height:2px;background:#e7a16a}.cell-illustration{position:relative}.cell{position:absolute;display:block;border-radius:50%;border:2px solid rgba(255,255,255,.9);box-shadow:0 6px 14px #30226b18}.cell:after{content:"";position:absolute;width:27%;height:27%;border-radius:50%;background:#fff8;top:35%;left:35%}.cell-a{width:65px;height:65px;left:19%;top:25%;background:#a895ff}.cell-b{width:48px;height:48px;left:43%;top:13%;background:#53d5bf}.cell-c{width:58px;height:58px;left:60%;top:40%;background:#ffb26f}.cell-d{width:37px;height:37px;left:30%;top:59%;background:#8ecff1}.cell-e{width:42px;height:42px;left:73%;top:10%;background:#a9d99c}.heatmap-illustration{display:grid;grid-template-columns:repeat(4,30px);grid-template-rows:repeat(4,23px);gap:5px;align-content:center}.heatmap-illustration span{border-radius:5px;background:#f6a6a3}.heatmap-illustration span:nth-child(3n){background:#79c9c2}.heatmap-illustration span:nth-child(4n){background:#7da6e9}.heatmap-illustration span:nth-child(5n){background:#f8d26d}.heatmap-illustration span:nth-child(7n){background:#b2a0ec}.course-card h3{font-size:22px;letter-spacing:-.7px;color:var(--navy);margin:0 0 10px}.course-card>p{font-size:12px;color:#5b6f7b;line-height:1.8;min-height:87px;margin-bottom:18px}.course-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;margin-bottom:19px}.course-meta span{font-size:10px;color:#4c6571;background:#ffffffa8;border:1px solid #ffffffa0;border-radius:7px;padding:6px 8px}.button-dark{background:var(--navy);color:#fff}.button-outline{border:1px solid #d4d9dc;background:#ffffff8a;color:var(--navy)}.button-dark,.button-outline{width:100%;justify-content:space-between}.section-footnote{margin:23px 0 0;color:#71818a;font-size:11px}.asterisk{color:#0b9b8c;font-size:16px;margin-right:6px}
+.lab-section{background:#eef2ee}.lab-grid{display:grid;grid-template-columns:.85fr 1.15fr;align-items:center;gap:70px}.lab-copy>p{font-size:14px;color:var(--muted);line-height:1.9;margin-top:21px}.lab-concept{display:flex;gap:13px;background:#fff;border:1px solid #dfe9e4;border-radius:13px;padding:15px;margin-top:22px}.concept-icon{flex:0 0 26px;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:#d7f7ef;color:#078d7c;font-weight:800;font-family:Georgia,serif}.lab-concept p{margin:0;font-size:11px;line-height:1.8;color:#627580}.lab-concept strong{color:var(--navy);font-size:12px}.small-note{font-size:10px!important;color:#849098!important;line-height:1.7!important}.lab-console{background:#102b3f;color:#fff;padding:22px;border-radius:20px;box-shadow:0 24px 60px #102b3f22}.console-header{display:flex;align-items:center;gap:12px;padding-bottom:18px;border-bottom:1px solid #ffffff1b;font:500 10px "DM Mono",monospace;letter-spacing:.6px;color:#c9d9df}.window-dots{display:flex;gap:5px;margin-right:4px}.window-dots i{width:7px;height:7px;border-radius:50%;background:#ff9f7c}.window-dots i:nth-child(2){background:#ffd36e}.window-dots i:nth-child(3){background:#58d9bb}.console-live{color:var(--teal);font-size:9px;margin-left:6px}.icon-button{margin-left:auto;border:1px solid #ffffff30;background:#ffffff0c;color:#fff;border-radius:7px;width:29px;height:29px;cursor:pointer}.sequence-label{display:block;font-size:11px;color:#a9c2cc;margin:18px 0 8px}.lab-console textarea{width:100%;resize:vertical;min-height:70px;background:#193c50;color:#8af0d8;border:1px solid #31566a;border-radius:10px;padding:13px;font:500 14px "DM Mono",monospace;letter-spacing:1.2px;outline:none}.lab-console textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px #47d5bd20}.input-help{font-size:10px;color:#88a3af;margin-top:7px}.sequence-error{color:#ffc2ad;font-size:11px;margin-top:8px}.console-results{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}.result-box{display:flex;flex-direction:column;background:#193c50;padding:12px;border:1px solid #31566a;border-radius:10px;gap:5px}.result-box span{font-size:9px;color:#a9c2cc}.result-box strong{font:700 23px Manrope,sans-serif;color:#fff}.result-box small{font-size:9px;color:#8caab6}.result-highlight{background:#164b50;border-color:#23786f}.result-highlight strong{color:var(--teal)}.base-counts{display:flex;gap:8px;margin:15px 0}.base-counts span{flex:1;display:flex;justify-content:space-between;padding:8px 10px;border-radius:7px;font:500 11px "DM Mono",monospace}.base-a{background:#4b3958;color:#e2c8ff}.base-t{background:#513f2f;color:#ffd3a3}.base-g{background:#194c4a;color:#9cf2df}.base-c{background:#244568;color:#b8ddff}.button-teal{background:var(--teal);color:var(--navy)}.run-button{width:100%;margin-top:2px}.console-footer{font-size:9px;color:#829ba6;margin-top:13px}
+.roadmap-section{background:#fff}.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.step{border:1px solid var(--line);border-radius:16px;padding:22px;background:#fff}.step-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;font:700 13px "DM Mono",monospace;margin-bottom:22px}.step-purple{background:#eeeaff;color:#745ed1}.step-teal{background:#d8f7ef;color:#078c7c}.step-orange{background:#fff0e2;color:#bb6a26}.step-blue{background:#e3f3fc;color:#357da8}.step h3{font-size:16px;letter-spacing:-.4px;margin-bottom:8px}.step p{font-size:12px;color:var(--muted);line-height:1.8;margin:0}
+.educator-section{padding-top:0;background:#fff}.educator-panel{background:var(--navy);color:#fff;border-radius:22px;padding:42px;display:grid;grid-template-columns:65px 1.1fr .9fr;gap:28px;align-items:center;position:relative;overflow:hidden}.educator-panel:after{content:"";position:absolute;width:300px;height:300px;border:1px solid #ffffff12;border-radius:50%;right:-80px;top:-180px;box-shadow:0 0 0 25px #ffffff05,0 0 0 50px #ffffff04}.educator-icon{width:58px;height:58px;border-radius:18px;background:#21495a;display:grid;place-items:center;color:var(--teal);font-size:32px}.educator-copy h2{font-size:30px;line-height:1.2;letter-spacing:-1px;margin:10px 0 12px}.educator-copy>p{font-size:12px;color:#c3d3db;line-height:1.9;margin:0}.educator-list{display:flex;flex-direction:column;gap:13px;font-size:12px;color:#d9e8e9;position:relative;z-index:1}.educator-list span:first-letter{color:var(--teal)}
+.about-section{padding-top:75px;padding-bottom:85px}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px}.about-grid h2{font-size:39px}.about-copy p{font-size:13px;color:var(--muted);line-height:1.9}.dark-link{color:#0a8e80;display:inline-flex;gap:8px;margin-top:3px}
+.closing-cta{background:#0d9d8b;color:#fff;padding:42px 0}.closing-inner{display:flex;justify-content:space-between;align-items:center;gap:30px}.closing-cta .eyebrow{color:#c7fff4}.closing-cta h2{font-size:30px;letter-spacing:-1px;margin:9px 0 4px}.closing-cta p{margin:0;color:#d7fff8;font-size:13px}.closing-cta .button-light{background:#fff;color:var(--navy);white-space:nowrap}
+.site-footer{background:#0c2232;color:#c3d2d8;padding:30px 0 18px}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:22px;padding-bottom:25px}.footer-brand .brand-mark{background:#214356}.footer-brand strong{color:#fff}.footer-brand small{color:#a7bbc4}.footer-inner>p{margin:0;font-size:11px;color:#9eb1bb}.footer-links{display:flex;gap:20px;font-size:11px}.footer-bottom{border-top:1px solid #ffffff17;padding-top:15px;display:flex;justify-content:space-between;color:#8299a4;font-size:10px}
+@media(max-width:950px){.site-nav{gap:15px}.hero-grid{gap:20px}.hero-art{transform:scale(.9);transform-origin:center}.lab-grid{gap:35px}.educator-panel{grid-template-columns:55px 1fr;}.educator-list{grid-column:2;display:grid;grid-template-columns:1fr 1fr}.ticker-inner{font-size:8px;letter-spacing:.7px}.course-card{padding:19px}}
+@media(max-width:760px){.container{width:min(100% - 32px,560px)}.nav-wrap{height:70px}.menu-toggle{display:block}.site-nav{display:none;position:absolute;left:16px;right:16px;top:62px;padding:16px;background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);flex-direction:column;align-items:stretch;gap:0}.site-nav.open{display:flex}.site-nav a{padding:12px 10px}.site-nav .nav-cta{margin-top:6px;text-align:center}.hero{padding:55px 0 50px}.hero-grid{grid-template-columns:1fr;gap:25px}.hero-copy{text-align:left}.hero-intro{font-size:15px}.hero-notes{gap:10px}.hero-art{min-height:330px;transform:scale(.9);transform-origin:top center;margin:0 -20px -22px}.card-dna{left:4%;top:28px}.card-chart{right:2%;top:110px}.card-microscope{left:22%;bottom:14px}.chip-code{right:6%;top:17px}.label-top{right:3%;top:-2px}.label-bottom{right:0;bottom:-5px}.ticker-inner{flex-wrap:wrap;justify-content:center;padding:14px 0;gap:8px 12px}.ticker-inner span{font-size:8px}.ticker-inner b{font-size:10px}.section{padding:66px 0}.section-heading{display:block;margin-bottom:27px}.section-heading>p{margin-top:18px}.course-grid{grid-template-columns:1fr;gap:13px}.course-card{padding:22px}.course-illustration{height:105px}.course-card>p{min-height:0}.lab-grid{grid-template-columns:1fr;gap:28px}.lab-console{padding:16px}.console-results{gap:5px}.result-box{padding:9px}.result-box strong{font-size:19px}.base-counts{gap:5px}.base-counts span{padding:7px 8px;font-size:10px}.steps-grid{grid-template-columns:1fr 1fr}.step{padding:17px}.step-icon{margin-bottom:14px}.educator-panel{padding:25px;grid-template-columns:1fr;gap:16px}.educator-copy h2{font-size:27px}.educator-list{grid-column:auto;grid-template-columns:1fr;gap:10px}.about-grid{grid-template-columns:1fr;gap:25px}.about-grid h2{font-size:34px}.closing-inner{align-items:flex-start;flex-direction:column}.closing-cta h2{font-size:27px}.footer-inner{flex-wrap:wrap;align-items:flex-start}.footer-inner>p{order:3;width:100%}.footer-links{margin-left:auto;gap:13px}.footer-bottom{gap:12px;flex-wrap:wrap}}
+@media(max-width:390px){.hero-art{transform:scale(.78);min-height:280px;margin-bottom:-45px}.hero-actions{align-items:flex-start;flex-direction:column;gap:15px}.steps-grid{grid-template-columns:1fr}.console-results{grid-template-columns:1fr 1fr}.result-highlight{grid-column:span 2}.brand strong{font-size:16px}.brand-mark{width:37px;height:37px}.footer-links{width:100%;margin-left:0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+'''
+
+files["assets/script.js"] = r'''(() => {
+  const menuButton = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('#site-nav');
+  if (menuButton && nav) {
+    menuButton.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.innerHTML = open ? 'Close <span aria-hidden="true">×</span>' : 'Menu <span aria-hidden="true">☰</span>';
+    });
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.innerHTML = 'Menu <span aria-hidden="true">☰</span>';
+    }));
+  }
+
+  const sequenceInput = document.querySelector('#dna-sequence');
+  if (!sequenceInput) return;
+  const errorBox = document.querySelector('#sequence-error');
+  const ids = {
+    length: document.querySelector('#result-length'),
+    gcCount: document.querySelector('#result-gc-count'),
+    gc: document.querySelector('#result-gc'),
+    a: document.querySelector('#count-a'),
+    t: document.querySelector('#count-t'),
+    g: document.querySelector('#count-g'),
+    c: document.querySelector('#count-c')
+  };
+  const reset = document.querySelector('#reset-sequence');
+  const analyze = document.querySelector('#analyze-sequence');
+  const original = 'ATGCGCGATATGCCG';
+
+  function runAnalysis() {
+    const raw = sequenceInput.value.toUpperCase().replace(/\s+/g, '');
+    const invalid = raw.match(/[^ATGC]/g);
+    if (!raw.length) {
+      showError('Enter a DNA sequence before analyzing it.');
+      return;
+    }
+    if (invalid) {
+      showError('That sequence contains invalid character(s): ' + [...new Set(invalid)].join(', ') + '. Use only A, T, G, and C.');
+      return;
+    }
+    const count = {A: 0, T: 0, G: 0, C: 0};
+    for (const base of raw) count[base]++;
+    const gc = count.G + count.C;
+    const percentage = (gc / raw.length) * 100;
+    ids.length.textContent = raw.length.toLocaleString();
+    ids.gcCount.textContent = gc.toLocaleString();
+    ids.gc.textContent = percentage.toFixed(1) + '%';
+    ids.a.textContent = count.A;
+    ids.t.textContent = count.T;
+    ids.g.textContent = count.G;
+    ids.c.textContent = count.C;
+    errorBox.hidden = true;
+    sequenceInput.setAttribute('aria-invalid', 'false');
+  }
+  function showError(message) {
+    errorBox.textContent = message;
+    errorBox.hidden = false;
+    sequenceInput.setAttribute('aria-invalid', 'true');
+  }
+  analyze.addEventListener('click', runAnalysis);
+  reset.addEventListener('click', () => {
+    sequenceInput.value = original;
+    runAnalysis();
+    sequenceInput.focus();
+  });
+  sequenceInput.addEventListener('keydown', event => {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') runAnalysis();
+  });
+  document.querySelector('#year').textContent = new Date().getFullYear();
+  runAnalysis();
+})();
+'''
+
+files["courses/dna-detective.html"] = r'''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102b3f">
+  <meta name="description" content="DNA Detective is a free beginner-friendly introduction to bioinformatics with Python.">
+  <title>DNA Detective — BioData Quest</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/course.css">
+  <script defer src="../assets/script.js"></script>
+</head>
+<body>
+<header class="site-header"><div class="container nav-wrap">
+  <a class="brand" href="../"><span class="brand-mark">⌬</span><span><strong>BioData Quest</strong><small>CODE · BIOLOGY · DISCOVERY</small></span></a>
+  <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav">Menu <span aria-hidden="true">☰</span></button>
+  <nav id="site-nav" class="site-nav" aria-label="Main navigation"><a href="../#courses">Courses</a><a href="../#lab">Try a lab</a><a href="../#educators">For educators</a><a class="nav-cta" href="../">Home <span aria-hidden="true">↗</span></a></nav>
+</div></header>
+<main>
+  <section class="course-hero"><div class="container">
+    <a class="back-link" href="../#courses">← All missions</a>
+    <div class="eyebrow">MISSION 01 · COURSE BLUEPRINT</div>
+    <h1>DNA <span>Detective</span></h1>
+    <p class="course-lede">Can code help you investigate a DNA sequence? Start with four letters, learn a few Python skills, and build your first bioinformatics tool.</p>
+    <div class="course-pills"><span>⌁ Python</span><span>◷ Beginner</span><span>♡ Free</span><span>▦ 5 lessons</span></div>
+    <div class="course-alert"><span>✳</span><p><strong>Course in development.</strong> This page is the learning roadmap. Notebook links and recorded lessons will be added as each activity is tested and published.</p></div>
+  </div></section>
+  <section class="section course-content"><div class="container course-layout">
+    <div class="lesson-list">
+      <div class="eyebrow eyebrow-dark">YOUR INVESTIGATION</div><h2>What you'll learn</h2>
+      <article class="lesson-card"><div class="lesson-index">01</div><div><h3>DNA is data</h3><p>Meet A, T, C, and G. Learn what a DNA sequence looks like and how computers represent it as text.</p><div class="lesson-tags"><span>Biology basics</span><span>Strings</span></div></div><span class="lesson-state">PLANNED</span></article>
+      <article class="lesson-card"><div class="lesson-index">02</div><div><h3>Count the bases</h3><p>Use Python variables, string methods, and simple loops to count each nucleotide.</p><div class="lesson-tags"><span>Python</span><span>Counting</span></div></div><span class="lesson-state">PLANNED</span></article>
+      <article class="lesson-card"><div class="lesson-index">03</div><div><h3>Calculate GC content</h3><p>Write a function to calculate the percentage of G and C bases in a sequence, and interpret the result carefully.</p><div class="lesson-tags"><span>Functions</span><span>Percentages</span></div></div><span class="lesson-state">PLANNED</span></article>
+      <article class="lesson-card"><div class="lesson-index">04</div><div><h3>Compare two sequences</h3><p>Compare equal-length example sequences, locate differences, and discuss what a difference can—and cannot—tell you.</p><div class="lesson-tags"><span>Iteration</span><span>Comparison</span></div></div><span class="lesson-state">PLANNED</span></article>
+      <article class="lesson-card"><div class="lesson-index">05</div><div><h3>Final challenge: unknown sample</h3><p>Analyze a new sequence, report your measurements, and explain your method and its limitations.</p><div class="lesson-tags"><span>Mini-project</span><span>Scientific writing</span></div></div><span class="lesson-state">PLANNED</span></article>
+      <div class="deliverable"><span class="deliverable-icon">⌘</span><div><h3>Your final build</h3><p>A reusable Python DNA analyzer that reports sequence length, base counts, GC content, and differences between two example sequences.</p></div></div>
+    </div>
+    <aside class="course-sidebar">
+      <div class="sidebar-card"><div class="eyebrow eyebrow-dark">COURSE DETAILS</div><h3>Before you begin</h3><ul><li>No previous bioinformatics experience required</li><li>Basic computer skills are helpful</li><li>Python will be introduced step by step</li><li>You'll need a browser for the planned online notebook</li></ul><div class="sidebar-divider"></div><h3>Skills you'll practice</h3><div class="skill-pills"><span>Python strings</span><span>Functions</span><span>Data analysis</span><span>Sequence comparison</span><span>Scientific reasoning</span></div></div>
+      <div class="sidebar-card sidebar-note"><span class="note-icon">✳</span><h3>Scientist's note</h3><p>Simple sequence statistics are useful starting points, but GC content alone cannot identify a species, diagnose a condition, or establish a biological function.</p></div>
+      <a class="button button-dark sidebar-button" href="../#lab">Try the DNA quick-check <span>→</span></a>
+    </aside>
+  </div></section>
+</main>
+<footer class="site-footer"><div class="container footer-inner"><a class="brand footer-brand" href="../"><span class="brand-mark">⌬</span><span><strong>BioData Quest</strong><small>CODE · BIOLOGY · DISCOVERY</small></span></a><p>Made for curious minds, with science and care.</p><div class="footer-links"><a href="../#courses">Courses</a><a href="../#about">About</a><a href="https://github.com/Kavya-Krishnamurthy" target="_blank" rel="noreferrer">GitHub ↗</a></div></div><div class="container footer-bottom"><span>© <span id="year"></span> BioData Quest</span><span>Built for learning, not diagnosing.</span></div></footer>
+</body>
+</html>
+'''
+
+files["assets/course.css"] = r'''.course-hero{background:#102b3f;color:#fff;padding:44px 0 58px;position:relative;overflow:hidden}.course-hero:after{content:"⌬";position:absolute;right:8%;top:30px;font-size:240px;line-height:1;color:#ffffff08;pointer-events:none}.back-link{display:inline-block;color:#b6cbd3;font-size:12px;margin-bottom:35px}.back-link:hover{color:#47d5bd}.course-hero h1{font-size:clamp(48px,7vw,72px);margin:15px 0}.course-hero h1 span{color:#47d5bd}.course-lede{font-size:17px;color:#c6d8df;line-height:1.8;max-width:700px}.course-pills{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0 27px}.course-pills span{font-size:11px;padding:7px 10px;border:1px solid #ffffff24;background:#ffffff0a;border-radius:7px;color:#d4e1e6}.course-alert{display:flex;align-items:flex-start;gap:12px;background:#1a4052;border:1px solid #2d5968;padding:15px 17px;border-radius:12px;max-width:700px}.course-alert>span{color:#47d5bd;font-size:20px}.course-alert p{font-size:12px;color:#c6d8df;line-height:1.8;margin:0}.course-alert strong{color:#fff}.course-content{padding-top:64px}.course-layout{display:grid;grid-template-columns:1.45fr .75fr;gap:44px;align-items:start}.lesson-list h2{font:800 32px Manrope,sans-serif;letter-spacing:-1px;color:#102b3f;margin:10px 0 25px}.lesson-card{display:grid;grid-template-columns:42px 1fr auto;gap:15px;align-items:start;padding:21px 0;border-bottom:1px solid #e0e8e4}.lesson-index{width:38px;height:38px;border-radius:12px;background:#d9f7ef;color:#078d7c;display:grid;place-items:center;font:700 12px "DM Mono",monospace}.lesson-card h3{font-size:17px;letter-spacing:-.4px;margin:0 0 7px}.lesson-card p{font-size:12px;line-height:1.8;color:#647887;margin:0 0 10px}.lesson-tags,.skill-pills{display:flex;flex-wrap:wrap;gap:6px}.lesson-tags span,.skill-pills span{font-size:9px;background:#f0f3f1;color:#61737e;padding:5px 7px;border-radius:5px}.lesson-state{font:500 8px "DM Mono",monospace;letter-spacing:.5px;color:#8b999f;background:#f0f3f1;padding:5px 6px;border-radius:5px}.deliverable{display:flex;gap:14px;background:#e1f8f1;padding:20px;border-radius:14px;margin-top:25px}.deliverable-icon{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;background:#fff;border-radius:10px;color:#098d7e;font-size:20px}.deliverable h3{font-size:16px;margin:0 0 6px;letter-spacing:-.3px}.deliverable p{font-size:12px;color:#57736f;line-height:1.8;margin:0}.course-sidebar{display:flex;flex-direction:column;gap:15px}.sidebar-card{padding:22px;border:1px solid #e0e8e4;border-radius:15px;background:#fff}.sidebar-card h3{font-size:17px;letter-spacing:-.4px;margin:12px 0}.sidebar-card ul{padding-left:18px;margin:0;color:#657783;font-size:11px;line-height:2}.sidebar-divider{height:1px;background:#e5ebe8;margin:20px 0}.skill-pills span{background:#e9f8f3;color:#287c71}.sidebar-note{background:#fff3e5;border-color:#f7e5cf}.note-icon{font-size:23px;color:#d18439}.sidebar-note p{font-size:11px;line-height:1.9;color:#786957;margin:0}.sidebar-button{width:100%;justify-content:space-between}@media(max-width:760px){.course-layout{grid-template-columns:1fr;gap:28px}.course-hero{padding-top:30px}.course-hero:after{right:-40px;top:120px;font-size:150px}.lesson-card{grid-template-columns:36px 1fr;gap:12px}.lesson-state{grid-column:2;justify-self:start;grid-row:2}.lesson-card p{margin-bottom:9px}.lesson-index{width:34px;height:34px}.course-lede{font-size:15px}}
+'''
+
+files["assets/favicon.svg"] = r'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#102b3f"/><path d="M20 10c28 8 28 36 0 44M44 10C16 18 16 46 44 54M23 17h18M18 27h28M18 37h28M23 47h18" fill="none" stroke="#47d5bd" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="10" r="3" fill="#a895ff"/><circle cx="44" cy="54" r="3" fill="#ffb26f"/></svg>'''
+
+files["README.md"] = r'''# BioData Quest — GitHub Pages starter
+
+A responsive, static educational website for free learning in bioinformatics, computational biology, Python, and AI. No build system or JavaScript framework is required.
+
+## What's included
+
+- `index.html` — home page with course cards, a learning roadmap, and an interactive DNA quick-check.
+- `courses/dna-detective.html` — starter course page and five-lesson blueprint.
+- `assets/styles.css` — responsive styles.
+- `assets/course.css` — course-page styles.
+- `assets/script.js` — mobile navigation and DNA sequence calculator.
+- `assets/favicon.svg` — simple site icon.
+
+## Preview locally
+
+Open `index.html` in a browser. For the best local preview, you can also run a basic local server from this folder:
+
+```bash
+python3 -m http.server 8000
